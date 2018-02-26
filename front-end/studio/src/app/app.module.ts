@@ -50,7 +50,6 @@ import {CreateApiFormComponent} from './pages/apis/create/_components/create-for
 import {ApisListComponent} from './pages/apis/_components/apis-list.component';
 import {ApisCardsComponent} from './pages/apis/_components/apis-cards.component';
 import {DropDownComponent} from './components/common/drop-down.component';
-import {AceEditorModule} from 'ng2-ace-editor';
 import {ActivityItemComponent} from './pages/apis/{apiId}/_components/activity-item.component';
 import {ApiCollaborationPageComponent} from './pages/apis/{apiId}/collaboration/api-collaboration.page';
 import {ApiAcceptPageComponent} from './pages/apis/{apiId}/collaboration/accept/api-accept.page';
@@ -100,12 +99,12 @@ import {
 } from './pages/apis/{apiId}/editor/_components/forms/main-form.component';
 import {AddMediaTypeDialogComponent} from './pages/apis/{apiId}/editor/_components/dialogs/add-media-type.component';
 import {CodeEditorComponent} from "./components/common/code-editor.component";
-
+import {CodemirrorModule} from '@nomadreservations/ngx-codemirror';
 
 @NgModule({
     imports: [
         BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, ModalModule.forRoot(), BsDropdownModule.forRoot(),
-        AceEditorModule
+        CodemirrorModule
     ],
     declarations: [
         AppComponent, DashboardPageComponent, BreadcrumbsComponent, BreadcrumbComponent, PageErrorComponent,

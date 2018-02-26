@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 
-import {Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from "@angular/core";
+import {Component, EventEmitter, Input, Output, ViewEncapsulation} from "@angular/core";
 import {Subject} from "rxjs/Subject";
 import {Subscription} from "rxjs/Subscription";
-import {AceEditorComponent} from "ng2-ace-editor";
-
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/yaml/yaml';
+import {CodemirrorService} from "@nomadreservations/ngx-codemirror";
 
 export enum CodeEditorTheme {
     Light, Dark
 }
 
 export enum CodeEditorMode {
-    Text, JSON, YAML
+    Text, JSON, YAML, Markdown
 }
 
 
@@ -40,16 +42,15 @@ export class CodeEditorComponent {
 
     private static DEFAULT_DEBOUNCE_TIME: number = 200;
 
-    @ViewChild("editor") public editor: AceEditorComponent;
-
     public _textValue: string;
     public _textValueDebouncer: Subject<string> = new Subject<string>();
     public _debounceTime: number;
     public _debouncerSubscription: Subscription;
 
+    private _editor: any;
+
     @Input() theme: CodeEditorTheme;
-    @Input() mode: CodeEditorMode;
-    @Input() editorStyle: any;
+    _mode: CodeEditorMode;
 
     @Input()
     get text() {
@@ -58,6 +59,7 @@ export class CodeEditorComponent {
 
     @Output() public textChange = new EventEmitter<string>();
     set text(value: string) {
+        console.info("Setting TEXT");
         this._textValue = value;
         this._textValueDebouncer.next(this._textValue);
     }
@@ -67,6 +69,7 @@ export class CodeEditorComponent {
         return this._debounceTime;
     }
     set debounceTime(time: number) {
+        console.info("Setting DEBOUNCE to: ", time);
         this._debounceTime = time;
         let bounce: number = this._debounceTime;
         if (!bounce) {
@@ -80,30 +83,57 @@ export class CodeEditorComponent {
         })
     }
 
-    constructor() {
+    @Input()
+    get mode() {
+        return this._mode;
+    }
+    set mode(newMode: CodeEditorMode) {
+        this._mode = newMode;
+        if (this._editor) {
+            console.info("Setting MODE");
+            // This should be the CM editor
+            if (this._mode === CodeEditorMode.JSON) {
+                this._editor.setOption("mode", "application/json");
+            } else if (this._mode === CodeEditorMode.YAML) {
+                this._editor.setOption("mode", "text/x-yaml");
+            } else if (this._mode === CodeEditorMode.Markdown) {
+                this._editor.setOption("mode", "text/x-markdown");
+            } else {
+                this._editor.setOption("mode", "text");
+            }
+        }
+    }
+
+    /**
+     * C'tor.
+     * @param {CodemirrorService} _codeMirror
+     */
+    constructor(private _codeMirror: CodemirrorService) {
         this._debouncerSubscription = this._textValueDebouncer.debounceTime(CodeEditorComponent.DEFAULT_DEBOUNCE_TIME).subscribe( value => {
+            console.info("Firing text-change msg");
             this.textChange.emit(value);
+        });
+        this._codeMirror.instance$.subscribe((editor) => {
+            this._editor = editor;
         });
     }
 
-    public aceMode(): string {
-        switch (this.mode) {
-            case CodeEditorMode.YAML:
-                return 'yaml';
-            case CodeEditorMode.JSON:
-                return 'json';
-            case CodeEditorMode.Text:
-                return 'text';
-            default:
-                return 'text';
+    public cmOptions(): any {
+        console.info("Returning standard CM options.");
+        let config: any = {
+            lineNumbers: true,
+            theme: "default",
+            mode: "text/plain"
+        };
+        if (this.mode === CodeEditorMode.YAML) {
+            config.mode = "text/x-yaml";
         }
-    }
-
-    public aceTheme(): string {
-        if (this.theme === CodeEditorTheme.Dark) {
-            return "twilight";
-        } else {
-            return "eclipse";
+        if (this.mode === CodeEditorMode.JSON) {
+            config.mode = "application/json";
         }
+        if (this.mode === CodeEditorMode.Markdown) {
+            config.mode = "text/x-markdown";
+        }
+        return config;
     }
 }

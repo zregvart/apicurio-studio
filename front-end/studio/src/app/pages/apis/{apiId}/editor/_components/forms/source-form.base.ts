@@ -15,19 +15,14 @@
  * limitations under the License.
  */
 
-import {EventEmitter, Output, ViewChild} from "@angular/core";
+import {EventEmitter, Output} from "@angular/core";
 import {OasLibraryUtils, OasNode} from "oai-ts-core";
 
-import "brace/theme/eclipse";
-import "brace/mode/json";
-import "brace/mode/yaml";
-import {AceEditorDirective} from "ng2-ace-editor";
 import {ObjectUtils} from "../../_util/object.util";
 import * as YAML from "yamljs";
 import {NodeSelectionEvent} from "../../_events/node-selection.event";
 import {ICommand} from "oai-ts-commands";
 import {CodeEditorMode, CodeEditorTheme} from "../../../../../../components/common/code-editor.component";
-import {ENTER_CLASSNAME} from "@angular/animations/browser/src/util";
 
 
 /**

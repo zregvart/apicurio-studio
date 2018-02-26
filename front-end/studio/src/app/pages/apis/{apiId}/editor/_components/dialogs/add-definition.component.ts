@@ -37,7 +37,6 @@ export class AddDefinitionDialogComponent {
     @Output() onAdd: EventEmitter<any> = new EventEmitter<any>();
 
     @ViewChildren("addDefinitionModal") addDefinitionModal: QueryList<ModalDirective>;
-    @ViewChildren("exampleEditor") exampleEditor: QueryList<CodeEditorComponent>;
 
     protected _isOpen: boolean = false;
 
@@ -50,6 +49,8 @@ export class AddDefinitionDialogComponent {
     protected defChanged: Subject<string> = new Subject<string>();
     protected defs: string[] = [];
     protected defExists: boolean = false;
+
+    public expanded: boolean = false;
 
     /**
      * Called to open the dialog.

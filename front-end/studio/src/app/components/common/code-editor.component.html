@@ -1,5 +1,9 @@
-<ace-editor #editor
+<!--<ace-editor #editor
             [theme]="aceTheme()"
             [mode]="aceMode()"
             [(text)]="text"
             [ngStyle]="editorStyle"></ace-editor>
+-->
+<ngx-codemirror #editor
+                [(ngModel)]="text"
+                [config]="cmOptions()"></ngx-codemirror>

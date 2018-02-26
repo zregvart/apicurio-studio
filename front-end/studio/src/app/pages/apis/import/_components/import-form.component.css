@@ -10,3 +10,9 @@ select {
 .importapi-form-panel {
   padding-top: 25px;
 }
+
+.importapi-form-panel ::ng-deep .CodeMirror {
+  height: 500px;
+  border: 1px solid #ccc;
+  width: 100%;
+}

@@ -25,11 +25,11 @@
                         </div>
                         <div class="section example-section panel-group">
                             <div class="section-header panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-target="#example-section-body">
+                                <a class="collapsed" (click)="expanded = !expanded">
                                     <span class="section-label">FROM EXAMPLE (optional)</span>
                                 </a>
                             </div>
-                            <div class="section-body collapse" id="example-section-body">
+                            <div class="section-body" id="example-section-body" *ngIf="expanded">
                                 <div class="explanation">
                                     Input a JSON formatted sample below and we'll do our best to initialize the Definition's schema
                                     based on the example.
@@ -38,8 +38,7 @@
                                     <code-editor [theme]="exampleEditorTheme()"
                                                  [mode]="exampleEditorMode()"
                                                  [debounceTime]="350"
-                                                 [(text)]="example"
-                                                 [editorStyle]="{ position: 'relative', height: '200px', border: '1px solid #ccc', width: '100%' }"></code-editor>
+                                                 [(text)]="example"></code-editor>
                                     <button class="btn btn-default btn-xs" type="button"
                                             [disabled]="!isExampleDefinitionFormattable()" (click)="formatExampleDefinition()">
                                         <span class="fa fa-fw fa-indent"></span>

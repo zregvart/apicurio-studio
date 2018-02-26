@@ -1203,3 +1203,28 @@
   color: #cc0000;
   font-size: 12px;
 }
+
+#addDefinitionModal .example {
+  position: relative;
+}
+#addDefinitionModal .example .CodeMirror {
+  position: relative;
+  height: 200px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.api-editor .editor-detail .detail-content-source {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.api-editor .editor-detail .detail-content-source .CodeMirror {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
